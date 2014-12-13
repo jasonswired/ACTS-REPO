@@ -1,0 +1,19 @@
+.nav a { cursor: pointer; }
+.pagination a { cursor: pointer; }
+.carousel a { cursor: pointer; }
+.panel-title a { cursor: pointer; }
+
+input.ng-invalid {
+  border: 1px solid red;
+}
+input.ng-valid {
+  border: 1px solid green;
+}
+.horizList li {
+	display: inline;
+	list-style-type: none;
+	padding-right: 20px;
+ }
+ .item-summary>tbody>tr>td{
+	padding:10px 20px;
+ }

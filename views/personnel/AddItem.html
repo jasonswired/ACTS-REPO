@@ -1,0 +1,46 @@
+
+<!--
+
+Modal Window
+
+In this case, we use the empty ePerson object that was created in the controller. The ePerson object values are bound to input tags here.
+
+The more complex piece is adding child values to ePersonSkills. This array is created in the controller.
+    - get and repeat skills (this will be empty to start). This is filtered by current ePerson.ID.
+    
+-->
+
+<div>
+<form name="form.Name">
+	<div class="modal-header"><h3 class="modal-title">Add Candidate</h3></div>
+	<div class="modal-body">
+		<p>	First Name <input type="text" ng-model="ePerson.FirstName" required> </p>
+        <p>	Last Name <input type="text" ng-model="ePerson.Title" required> </p>
+		<p>	Work Phone <input type="text" ng-model="ePerson.WorkPhone"> </p>
+		<p>	Email <input type="text" ng-model="ePerson.Email" required></p>
+		<p>
+		<!--
+        <table>
+				<tr ng-repeat="personSkill in ePersonSkills | filter: { PersonId: ePerson.Id }:true" ng-hide="personSkill.remove">
+					<td><select ng-model="personSkill.SkillId" ng-options="skill.Id as skill.Title for skill in skills | filterPersonSkills: personSkill:ePersonSkills" ng-required="!personSkill.remove"></select></td>
+					<td><input type="number" min="0" max="100" ng-model="personSkill.Years_x0020_of_x0020_Experience" ng-required="!personSkill.remove"></td>
+					<td><select ng-model="personSkill.CompetencyId" ng-options="competency.Id as competency.Title for competency in competencies" ng-required="!personSkill.remove"></select></td>
+					<td><button type="button" class="btn btn-default btn-xs" ng-click="removeSkill(personSkill)"><span class="glyphicon glyphicon-remove"></span> Remove</button></td>
+				</tr>
+				<tr>
+					<td><button type="button" class="btn btn-primary" ng-click="addSkill(ePerson.Id)">Add a Skill</button></td>
+				</tr>
+			</table>
+        -->
+		</p>
+       
+        <!-- <iframe src="https://collaboration.armedia.com/sites/ACTS/Lists/Candidates/NewForm.aspx"></iframe>      -->
+        
+        
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="submit" ng-click="save()">Save</button>
+		<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	</div>
+</form>
+</div>

@@ -1,0 +1,87 @@
+<div ng-controller="RolesController" ng-cloak>
+	<div>
+		<div style="text-align:right;">
+			Search: <input type="text" ng-model="search.skillsSearch">
+		</div>
+		<accordion close-others="true">
+			<accordion-group ng-repeat="role in roles | filter:search.skillsSearch">
+				<accordion-heading>
+					{{role.Title}}
+				</accordion-heading>
+				<table class="item-summary">
+						<tr valign="top">
+							<td>
+								About
+							</td>
+							<td>
+								<table class='table table-condensed table-striped'>
+									<tr>
+										<td>Title:</td>
+										<td>{{role.Title}}</td>
+									</tr>
+									<tr>
+										<td>Filled by:</td>
+										<td>
+											<table>
+												<tr ng-repeat="person in personnel | filter: { Id: role.PersonId }:true">
+													<td>{{person.Title}}, {{person.FirstName}}</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr valign="top">
+							<td>
+								Desired Skills
+							</td>
+							<td>
+								<table class='table table-condensed table-striped'>
+									<tr>
+										<td>Skill Name</td>
+										<td>Skill Level</td>
+										<td>Years of Experience</td>
+									</tr>
+									<tr ng-repeat="roleSkill in roleSkills | filter: { RoleId: role.Id }:true">
+										<td ng-repeat="skill in skills | filter: { Id: roleSkill.SkillId }:true">{{skill.Title}}</td>
+										<td ng-repeat="importance in skillImportance | filter: { Id: roleSkill.Skill_x0020_ImportanceId }:true">{{importance.Title}}</td>
+										<td>{{roleSkill.Years_x0020_of_x0020_Experience}}</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr valign="top">
+							<td>
+								Candidates
+							</td>
+							<td>
+								<table class='table' ng-controller="FitController">
+									<tr ng-repeat="roleFit in fit | filter: { RoleId: role.Id }:true | filter:topCandidatesFilter | orderBy:'Fit':reverse">
+										<td>
+											<div ng-repeat="person in personnel | filter: { Id: roleFit.PersonId }:true">
+												{{person.Title}}, {{person.FirstName}}
+											</div>
+										</td>
+										<td>
+											<div class="progress">
+												<div class="progress-bar {{roleFit.Style}}" role="progressbar" ng-style="{width: ({{roleFit.Fit}}+'%')}">
+													{{roleFit.Fit}}% Fit
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				<div>
+					<button type="button" class="btn btn-primary" ng-click="edit(role)">Edit this Role</button>
+				</div>
+			</accordion-group>
+		</accordion>
+		<div>
+			<button type="button" class="btn btn-primary" ng-click="add()">Add a Role</button>
+		</div>
+	</div>
+</div>

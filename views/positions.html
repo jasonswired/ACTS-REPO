@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-md-4">
+    <h4>Positions</h4> 
+    <h6>Click a row for more details</h6> 
+    <p><label>Filter:</label> <input type="text" ng-model="positionFilter.filterText" /></p> <!-- the filter is in filterOptions in the PositionsGrid -->
+    <div class="btn-group hide">
+        <label class="btn btn-success" ng-model="radioModel" btn-radio="'Left'" uncheckable><span class="small">Open</span></label>
+        <label class="btn btn-success" ng-model="radioModel" btn-radio="'Middle'" uncheckable><span class="small">Closed</span></label>
+        <label class="btn btn-success" ng-model="radioModel" btn-radio="'Right'" uncheckable><span class="small">All</span></label>
+        </div>
+    <div class="gridStyle2" ng-grid="positionsGrid"></div> <!-- gridOptions is defined in the controller -->
+    <!-- raw output of select grid items -->
+    <!-- <div class="selectedItems">{{mySelections}}</div> -->
+    <!-- {{gridOptions.selectedItems}} -->
+      
+    </div>
+  <div class="col-md-8">
+      </br></br>
+      <div ng-repeat="selectedPosition in myPositionSelections">  <!-- mySelections is defined in the controller. 'row' could be anything -->
+          <h4><i class="glyphicon glyphicon-inbox"> </i><b> {{selectedPosition.Position}}</b> ({{selectedPosition.ProjectsValue | cleanMetadata}}) </h4>
+          <h6>Opened {{selectedPosition.PositionOpened | cleanDate | date: 'MM-dd-yyyy'}}, Closed {{selectedPosition.PositionClosed | cleanDate | date: 'MM-dd-yyyy'}}</h6>
+          <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title hide">{{selectedPosition.Position}}</h3>
+          </div>
+          <div class="panel-body">
+              <h5 align="right">
+                <a href="https://collaboration.armedia.com{{selectedPosition.Path}}/DispForm.aspx?ID={{selectedPosition.Id}}&Source={{location.absUrl()}}"><b>View Position Details</b></a> | 
+                <a href="https://collaboration.armedia.com{{selectedPosition.Path}}/EditForm.aspx?ID={{selectedPosition.Id}}&Source={{location.absUrl()}}"><b>Edit Position</b></a>
+              </h5>
+                <!-- <b>Number Applications: </b> {{selectedPosition.NumberApplications}} </br> -->
+                <p><b>Project: </b> {{selectedPosition.ProjectsValue | cleanMetadata}}</p>
+               <!-- <p><b>Project: </b> <a href="#" editable-text="selectedPosition.ProjectsValue">{{selectedPosition.ProjectsValue || "empty" }}</a></p> -->
+                <p><b>Position Status: </b> {{selectedPosition.PositionStatusValue | cleanMetadata}}</p>
+                <p><b>Armedia Location: </b> {{selectedPosition.LocationValue | cleanMetadata}}</p>
+                <p><b>Desired Skills: </b> {{selectedPosition.DesiredSkillsValue | cleanMetadata}}</p>
+                <p><b>Required Skills: </b> {{selectedPosition.RequiredSkillsValue | cleanMetadata}}</p>
+                <p><b>Clearance: </b> {{selectedPosition.ClearanceValue | cleanMetadata}}</p>
+                <p><b>Job Responsibilities: </b> {{selectedPosition.JobResponsibilities | htmlToPlaintext}}</p>
+                <p><b>Qualifications: </b> {{selectedPosition.Qualifications | htmlToPlaintext}}</p>
+                
+             <h6 align="right">Position ID: {{selectedPosition.Id}}</h6>
+      
+<!-- https://docs.angularjs.org/api/ng/directive/ngBindHtml 
+<p ng-bind-html="selectedPosition.JobResponsibilities | unsafe"></p>
+-->
+          </div>
+        </div>
+
+<!-- This will show the Applications that match on the Position  -->
+    <h4>Applicants</h4>
+   <accordion close-others="oneAtATime">
+       <div ng-repeat="matchingApp1 in appCount = (applicationsJSON | filter: {ApplicationPositionId: selectedPosition.Id}:true)"> 
+           <!-- using 'true' will get he exact match. without this i was trying to match 19 and it was return 19, 119, 419, etc -->
+           <!--  <li>Selected Candidate's Application ID: {{matchingCandidate.Id}}, {{matchingCandidate.CandidateId}}</li> -->
+           <div  ng-repeat="candidateMatch in candidateJSON | filter: {Id: matchingApp1.CandidateId}:true">
+                <accordion-group>
+                    <accordion-heading>
+                            <i class="glyphicon glyphicon-user">&nbsp;</i> <b> {{candidateMatch.Fullname}}</b> &nbsp;&nbsp;| &nbsp;&nbsp;{{matchingApp1.ApplicationStatusValue}}    
+                    </accordion-heading>
+                    <h5 align="right">
+                        <a href="https://collaboration.armedia.com{{matchingApp1.Path}}/DispForm.aspx?ID={{matchingApp1.Id}}&Source={{location.absUrl()}}"><b>View Application Details</b></a> | 
+                        <a href="https://collaboration.armedia.com{{matchingApp1.Path}}/EditForm.aspx?ID={{matchingApp1.Id}}&Source={{location.absUrl()}}"><b>Edit Application</b></a>
+                    </h5>
+                    <p><b>Email: </b>{{candidateMatch.EMailPersonal}}</p>
+                    <p><b>Application Status: </b>{{matchingApp1.ApplicationStatusValue}}</p>
+                    <p><b>Phone Screen Notes:</b> {{matchingApp1.PhoneScreenNotes}}</p>
+                    <p><b>Interview Notes: </b> {{matchingApp1.InterviewNotes}}</p>
+                    <p><b>Test Status: </b>{{matchingApp1.TestStatusValue}}</p>
+                    <p><b>Recruiter Notes: </b>{{matchingApp1.RecruiterNotes}}</p>
+                    <p><b>Candidate Response:</b> {{matchingApp1.CandidateResponse}}</p>
+
+                    <h6 align="right">{{selectedPosition.Position}} | App ID: {{matchingApp1.Id}} | Position ID: {{matchingApp1.ApplicationPositionId}}</h6>
+
+                </accordion-group>
+           </div>
+       </div>
+<h4>There are {{appCount.length}} Applications for {{selectedPosition.Position}}</h4>
+      </div> 
+      <!-- 
+   <div ng-model="testRows">
+    <h3>A single item in the Candidate list.</h3>
+  <ul ng-repeat="(key, val) in candidateJSON[0]">
+    <li>{{key}}: {{val}}</li>
+  </ul>
+</div>
+    
+    -->
+    
+</div>
+</div>

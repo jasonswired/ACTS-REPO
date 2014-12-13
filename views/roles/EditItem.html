@@ -1,0 +1,29 @@
+<div>
+<form name="form.Name">
+	<div class="modal-header">
+		<h3 class="modal-title">Edit Role</h3>
+	</div>
+	<div class="modal-body">
+		<p>
+			<input type="text" ng-model="eRole.Title" required>
+		</p>
+		<p>
+			<table>
+				<tr ng-repeat="roleSkill in eRoleSkills | filter: { RoleId: eRole.Id }:true" ng-hide="roleSkill.remove">
+					<td><select ng-model="roleSkill.SkillId" ng-options="skill.Id as skill.Title for skill in skills | filterRoleSkills: roleSkill:eRoleSkills" ng-required="!roleSkill.remove"></select></td>
+					<td><input type="number" min="0" max="100" ng-model="roleSkill.Years_x0020_of_x0020_Experience" ng-required="!roleSkill.remove"></td>
+					<td><select ng-model="roleSkill.Skill_x0020_ImportanceId" ng-options="importance.Id as importance.Title for importance in skillImportance" ng-required="!roleSkill.remove"></select></td>
+					<td><button type="button" class="btn btn-default btn-xs" ng-click="removeSkill(roleSkill)"><span class="glyphicon glyphicon-remove"></span> Remove</button></td>
+				</tr>
+				<tr>
+					<td><button type="button" class="btn btn-primary" ng-click="addSkill(eRole.Id)">Add a Skill</button></td>
+				</tr>
+			</table>
+		</p>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="submit" ng-click="save()">Save</button>
+		<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	</div>
+</form>
+</div>

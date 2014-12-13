@@ -1,0 +1,85 @@
+<div ng-controller="PersonnelController" ng-cloak>
+	<div>
+		<div style="text-align:right;">
+			Search: <input type="text" ng-model="search.personSearch">
+		</div>
+		<accordion close-others="true">
+			<accordion-group ng-repeat="person in personnel | filter:search.personSearch">
+				<accordion-heading>
+					{{person.Title}}, {{person.FirstName}}
+				 </accordion-heading>
+					<table class="item-summary">
+						<tr valign="top">
+							<td>
+								About
+							</td>
+							<td>
+								<table class='table table-condensed table-striped'>
+									<tr>
+										<td>Phone:</td>
+										<td>{{person.WorkPhone}}</td>
+									</tr>
+									<tr>
+										<td>Email:</td>
+										<td>{{person.Email}}</td>
+									</tr>
+                                    <tr>
+										<td>Company:</td>
+										<td>{{person.Company}}</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr valign="top">
+							<td>
+								Skills
+							</td>
+							<td>
+								<table class='table table-condensed table-striped'
+									<tr>
+										<td>Skill Name</td>
+										<td>Skill Level</td>
+										<td>Years of Experience</td>
+									</tr>
+									<tr ng-repeat="personSkill in personSkills | filter: { PersonId: person.Id }:true">
+										<td ng-repeat="skill in skills | filter: { Id: personSkill.SkillId }:true">{{skill.Title}}</td>
+										<td ng-repeat="competency in competencies | filter: { Id: personSkill.CompetencyId }:true">{{competency.Title}}</td>
+										<td>{{personSkill.Years_x0020_of_x0020_Experience}}</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr valign="top">
+							<td>
+								Potential Roles
+							</td>
+							<td>
+								<table class='table' ng-controller="FitController">
+									<tr ng-repeat="roleFit in fit | filter: { PersonId: person.Id }:true | filter:topCandidatesFilter | orderBy:'Fit':reverse">
+										<td>
+											<div ng-repeat="role in roles | filter: { Id: roleFit.RoleId }:true">
+												{{role.Title}}
+											</div>
+										</td>
+										<td>
+											<div class="progress">
+												<div class="progress-bar {{roleFit.Style}}" role="progressbar" ng-style="{width: ({{roleFit.Fit}}+'%')}">
+													{{roleFit.Fit}}% Fit
+												</div>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<div>
+						<button type="button" class="btn btn-primary" ng-click="edit(person)">Edit this Person</button>
+					</div>
+			</accordion-group>
+		</accordion>
+		<div>
+			<button type="button" class="btn btn-primary" ng-click="add()">Add a Person</button>
+		</div>
+	</div>
+</div>

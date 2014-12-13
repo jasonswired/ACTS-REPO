@@ -1,0 +1,208 @@
+ <div class="row">
+  <div class="col-md-4">
+   
+ <!-- START - Grid with selection feature -->
+    
+    <h4>Candidates</h4> 
+    <h6>Click a row for more details</h6> 
+       <label>Filter:</label> <input class="small" type="text" ng-model="candidateFilter.filterText" /> <!-- $scope.candidateFilter is set in the controller. This is used by filterOptions in the CandidatesGrid -->
+     <div class="btn-group hide">
+        <label class="btn btn-success" ng-model="radioModel" btn-radio="'Left'" uncheckable><span class="small">Open</span></label>
+        <label class="btn btn-success" ng-model="radioModel" btn-radio="'Middle'" uncheckable><span class="small">Closed</span></label>
+        <label class="btn btn-success" ng-model="radioModel" btn-radio="'Right'" uncheckable><span class="small">All</span></label>
+    </div>
+     
+      <div class="gridStyle2" ng-grid="candidateGrid"></div> <!-- | filter:filterService.searchText --> <!-- gridOptions is defined in the controller -->
+    <!-- raw output of select grid items -->
+    <!-- <div class="selectedItems">{{mySelections}}</div> -->
+    <!-- {{gridOptions.selectedItems}} -->
+      
+  </div>
+  <div class="col-md-8">
+     </br></br>
+      <div ng-repeat="selectedCandidate in myCandidateSelections">  <!-- mySelections is defined in the controller. 'selectedCandidate' could be anything -->
+          <h4><i class="glyphicon glyphicon-user"></i> <b> {{selectedCandidate.FirstName }} {{selectedCandidate.LastName}}</b></h4>
+          <h6>{{selectedCandidate.EMailPersonal}} | <abbr title="Phone">Mobile:</abbr> {{selectedCandidate.PhoneMobile}} | State: {{selectedCandidate.StateValue | cleanMetadata}}</h6>
+          
+            <p><b>Major: </b>{{selectedCandidate.Major}} {{selectedCandidate.AdditionalDegrees}}</p>
+            <p class="hide"><b>Referred By (Id): </b> {{selectedCandidate.ReferredById}}</p>
+            <p><b>Clearance: </b> {{selectedCandidate.ClearanceValue | cleanMetadata}}</p>
+            <p><b>Skills: </b> {{selectedCandidate.SkillsValue | cleanMetadata}}</p>
+            <p><b>Recruiter Candidate Notes:</b> {{selectedCandidate.RecruiterNotes}}</p> 
+            <p><i class="glyphicon glyphicon-paperclip"></i> <b>Resume: </b><a href="{{selectedCandidate.Attachments.results[0].__metadata.media_src}}">{{selectedCandidate.Attachments.results[0].Name}}</a></br></p> 
+  
+
+<div ng-repeat="matchingApp in applicationsJSON | filter: {CandidateId: selectedCandidate.Id}:true"> 
+          <div class="panel panel-success">
+          <div class="panel-heading">
+                          
+              <span ng-repeat="matchingPosition in positionsJSON | filter: {Id: matchingApp.ApplicationPositionId}:true">
+              <i class="glyphicon glyphicon-file"></i> Application for <b>
+                  
+                  {{matchingPosition.Position}}
+              </b>
+              | <a style="color: white" href="https://collaboration.armedia.com{{matchingPosition.Path}}/DispForm.aspx?ID={{matchingPosition.Id}}&Source={{location.absUrl()}}">View Position Details</a>
+              </span>
+          </div>
+          <div class="panel-body">
+              
+      <!-- This will show the Applications that match on the Candidate Lookup -->
+
+            
+           
+                <h4 align="right">{{matchingApp.ApplicationStatusValue}} | {{matchingApp.StatusDate | cleanDate | date: 'yyyy-MM-dd'}}</h4>
+               <h6 align="right" class="hide">
+                  <div class="btn-group" align="right">
+                    <label class="btn btn-default" ng-model="radioModel" btn-radio="'View'" uncheckable>View</label>
+                    <label class="btn btn-default" ng-model="radioModel" btn-radio="'Edit'" uncheckable>Edit</label>
+                    <label class="btn btn-warning" ng-model="radioModel" btn-radio="'Close'" uncheckable>Close Application</label>
+                    <button type="button" class="btn btn-success" ng-click="addCandidate()">Add a Candidate</button>
+                </div>
+                 </h6>  
+              
+              <h5 align="right">
+                <a href="https://collaboration.armedia.com{{matchingApp.Path}}/DispForm.aspx?ID={{matchingApp.Id}}&Source={{location.absUrl()}}"><b>View Application Details</b></a> | 
+                <a href="https://collaboration.armedia.com{{matchingApp.Path}}/EditForm.aspx?ID={{matchingApp.Id}}&Source={{location.absUrl()}}"><b>Edit Application</b></a>
+              </h5>
+                
+                              <h6 class="hide" align="right"> Candidate ID: {{selectedCandidate.Id}}</h6>
+    
+              <!-- Modal Testing -->
+  <div ng-controller="ModalDemoCtrl" class="hide">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+        <iframe src="http://plnkr.co/" width="100%" height="90%"></iframe>
+            <ul>
+                <li ng-repeat="item in items">
+                    <a ng-click="selected.item = item">{{ item }}</a>
+                </li>
+            </ul>
+            Selected: <b>{{ selected.item }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <button class="btn btn-default" ng-click="open()">Open me!</button>
+    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
+    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+</div>
+              <!-- end modal testing -->
+            
+              <p>Candidate Full Name: {{matchingApp.CandidateArray.Fullname}}</p>
+              <p>Candidate Recruiter Notes: {{matchingApp.CandidateArray.RecruiterNotes}}</p>
+              <p>Position: {{matchingApp.PositionArray.Position}}</p>
+              
+              
+            <p><b>Recruiter Application Notes: </b>{{matchingApp.RecruiterNotes}}</p>    
+            <p><b>Available Date: </b>{{matchingApp.Available | cleanDate | date: 'yyyy-MM-dd'}}</p>
+            <p><b>Desired Compensation: </b>{{matchingApp.DesiredCompensation}}</p>
+        
+                
+           <!-- using 'true' will get he exact match. without this i was trying to match 19 and it was return 19, 119, 419, etc -->
+           <!--  <li>Selected Candidate's Application ID: {{matchingApp.Id}}, {{matchingApp.CandidateId}}</li> -->
+                
+                 <form class="form-horizontal" role="form">
+                    <div class="form-group hide"><p class="col-sm-3"><b>Application Closed</b></p><p class="col-sm-9">{{matchingApp.ApplicationClosed}}</p></div>
+                    <div class="form-group hide"><p class="col-sm-3"><b>Application Status</b></p><p class="col-sm-9">{{matchingApp.ApplicationStatusValue}}</p></div>
+                    <div class="form-group hide"><p class="col-sm-3"><b>Status Date</b></p><p class="col-sm-9">{{matchingApp.StatusDate | cleanDate | date: 'yyyy-MM-dd'}}</p></div>       
+                     
+                                          <div class="panel panel-default">
+          <div class="panel-heading">
+                Phone Screen and Interview
+          </div>
+          <div class="panel-body">
+            <table class="hide">
+              <tr>
+                    <td>Phone Screen Required </td>    
+                    <td>{{matchingApp.PhoneScreenRequiredValue}}</td>    
+              </tr>
+                <tr>
+                    <td>Phone Screen Scheduled</td>    
+                    <td>{{matchingApp.PhoneScreenScheduled}}</td>    
+              </tr>
+                <tr>
+                    <td>Phone Screen Notes </td>    
+                    <td>{{matchingApp.PhoneScreenNotes}}</td>    
+              </tr>
+                <tr>
+                    <td>Schedule Interview </td>    
+                    <td>{{matchingApp.ScheduleInterviewValue}}</td>    
+              </tr>
+                <tr>
+                    <td>Interviewed </td>    
+                    <td>{{matchingApp.InterviewedValue}}</td>    
+              </tr>
+                <tr>
+                    <td>Interview Notes </td>    
+                    <td>{{matchingApp.InterviewNotes}}</td>    
+              </tr>
+               </tr>
+                <tr>
+                    <td>Interview </td>    
+                    <td>{{matchingApp.Interview | cleanDate | date: 'yyyy-MM-dd'}}</td>    
+              </tr>
+             </table>
+              
+                    <div class="form-group"><p class="col-sm-3"><b>Phone Screen Required</b></p><p class="col-sm-9">{{matchingApp.PhoneScreenRequiredValue}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Phone Screen Scheduled</b></p><p class="col-sm-9">{{matchingApp.PhoneScreenScheduled | cleanDate | date: 'yyyy-MM-dd'}}</p></div>
+                    <div class="form-group hide"><p class="col-sm-3"><b>Phone Interviewer</b></p><p class="col-sm-9">{{matchingApp.PhoneInterviewer}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Phone Screen Notes</b></p><p class="col-sm-9">{{matchingApp.PhoneScreenNotes}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Schedule Interview</b></p><p class="col-sm-9">{{matchingApp.ScheduleInterviewValue}}</p></div>
+                    <div class="form-group hide"><p class="col-sm-3"><b>Interviewers</b></p><p class="col-sm-9">{{matchingApp.Interviewers}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Interviewed</b></p><p class="col-sm-9">{{matchingApp.InterviewedValue}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Interview Notes</b></p><p class="col-sm-9">{{matchingApp.InterviewNotes}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Interview</b></p><p class="col-sm-9">{{matchingApp.Interview | cleanDate | date: 'yyyy-MM-dd'}}</p></div>
+                                              </div></div>         
+                     <div class="panel panel-default">
+          <div class="panel-heading">
+                Testing
+          </div>
+          <div class="panel-body">
+                     
+                    <div class="form-group"><p class="col-sm-3"><b>Send/Resend Test</b></p><p class="col-sm-9">{{matchingApp.SendResendTest}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Test Sent</b></p><p class="col-sm-9">{{matchingApp.TestSent | cleanDate | date: 'yyyy-MM-dd'}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Test Received</b></p><p class="col-sm-9">{{matchingApp.TestReceived | cleanDate | date: 'yyyy-MM-dd'}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Test Reviewer</b></p><p class="col-sm-9">{{matchingApp.TestReviewerId}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Test Review Notes</b></p><p class="col-sm-9">{{matchingApp.TestReviewNotes}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Test Status</b></p><p class="col-sm-9">{{matchingApp.TestStatusValue}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Test Status Date</b></p><p class="col-sm-9">{{matchingApp.TestStatusDate | cleanDate | date: 'yyyy-MM-dd'}}</p></div>
+                         </div>
+                     </div>
+                     
+                                          <div class="panel panel-default">
+          <div class="panel-heading">
+                Notification
+          </div>
+          <div class="panel-body">
+              
+
+                    <div class="form-group"><p class="col-sm-3"><b>Notified By</b></p><p class="col-sm-9">{{matchingApp.NotifiedById}}</p></div>
+                    <div class="form-group hide"><p class="col-sm-3"><b>Notification Method</b></p><p class="col-sm-9">{{matchingApp.NotificationMethod}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Notified By Phone</b></p><p class="col-sm-9">{{matchingApp.NotifiedByPhone | cleanDate | date: 'yyyy-MM-dd'}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Notified By Email</b></p><p class="col-sm-9">{{matchingApp.NotifiedByEmail | cleanDate | date: 'yyyy-MM-dd'}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Notified By Letter</b></p><p class="col-sm-9">{{matchingApp.NotifiedByLetter | cleanDate | date: 'yyyy-MM-dd'}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Candidate Response</b></p><p class="col-sm-9">{{matchingApp.CandidateResponse}}</p></div>
+                    <div class="form-group"><p class="col-sm-3"><b>Declined Comments</b></p><p class="col-sm-9">{{matchingApp.DeclinedComments}}</p></div>
+                    </div>
+                     </div>
+              </form>
+            
+       
+
+            <h6 align="right">Candidate ID: {{selectedCandidate.Id}} | App ID: {{matchingApp.Id}} | Position ID: {{matchingApp.ApplicationPositionId}}</h6>
+</div>
+          </div>
+     
+        </div>
+        </div> <!-- END GRID Example -->
+
+    </div>
+
+</div>

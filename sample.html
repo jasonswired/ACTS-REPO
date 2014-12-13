@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html> 
+
+<head lang="en"><meta charset="utf-8">
+    
+<!-- CSS -->
+<link rel="stylesheet" href="../SiteAssets/css/bootstrap.css" >
+<link rel="stylesheet" href="../SiteAssets/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="../SiteAssets/css/ng-table.min.css" >
+
+<!-- LIBRARIES -->
+<script type="text/javascript" src="../SiteAssets/js/libs/angular.min.js"></script>
+<script type="text/javascript" src="../SiteAssets/js/libs/ui-bootstrap-tpls.min.js"></script>
+<script type="text/javascript" src="../SiteAssets/js/libs/ng-table.min.css"></script>
+<!-- <script type="text/javascript" src="../SiteAssets/js/scripts/xml2json.min.js"></script> <!--added for 2010-->
+
+    
+<!-- CUSTOM JS -->
+<script type="text/javascript">
+    var app = angular.module('myModule', ['ngResource']);
+
+    app.controller('fessCntrl', function ($scope, Data) {
+
+            Data.query()
+                .then(function (result) {
+                    console.log(result);
+                $scope.bla = result.users;
+            }, function (result) {
+                alert("Error: No data returned");
+            });
+    });
+
+    app.$inject = ['$scope', 'Data'];
+
+    app.factory('Data', ['$resource', '$q', function ($resource, $q) {
+        var data = 
+            {"users":[{"id":1,"firstname":"Naveen","lastname":"Dutt","email":"naveendutt.vya‌​s@gmail.com","telephone":"7829418355"},{"id":3,"firstname":"sameer","lastname":"s‌​ahlot","email":"abc","telephone":"34234324"}]};
+        //var TestResource = $resource('localhost/shfofx/PHP/Rest/alertLossDetails.php', 
+        //       {},
+        //      { query: {method:'GET', params:{}}}
+        //               );
+
+        var factory = {
+            query: function (selectedSubject) {
+                var deferred = $q.defer();          
+                deferred.resolve(data);           
+                return deferred.promise;
+            }
+        }
+        return factory;
+    }]);
+    
+    
+    
+    
+</script>
+
+</head>
+
+<body ng-app="myModule">
+<i class="glyphicon glyphicon-home"></i>
+    <div ng-controller="fessCntrl">
+       <ul >
+        <li ng-repeat="user in bla"> {{ user.firstname }} </li>
+    </ul>
+    </div>
+    
+</body>
+</html>

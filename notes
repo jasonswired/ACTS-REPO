@@ -1,0 +1,209 @@
+candidatesModule
+
+
+
+We define the top level of the app in App.js
+    - Here define the app variable name 'myApp', with it's dependencies - services, modules, etc.
+    - Depends on 
+        'myApp.services'
+        'ngGrid'
+        'personnel'
+    
+When additional modules are added, they must be added to the 'myApp'
+
+Each .js can be a module
+
+
+*********************************************
+
+In the filter example below, we are finding a match between the child's parentLookup value and Parent Id value. 
+The parentLookup reference is shorthand for childItem.parentLookup in this example.
+
+<div ng-repeat="parentItem in parentJSON">
+
+<ul ng-repeat="childItem in childJSON | filter: {parentLookup: parentItem.Id}">
+    <li>The parent id is {{parentItem.Id}} and has a child item with id {{childItem.Id}}</li>
+</ul>
+
+</div>
+
+
+
+Parent: Position
+Child: Application
+
+Parent: Candidate
+Child: Application
+
+Parent: Application
+Child: Interview, Test, Notes
+
+
+*************************************************
+
+Within an ng-repeat action/tag you can actually save data to a variable. this is very powerful when used with filters.
+
+Lets imagine we have an array titled "AllNames". We want to iterate through a subset of the array, maybe matching on the name John.
+
+        <li ng-repeat='justJohns in AllNames | filter: {FirstName: "John:}:true'>
+            {{justJohns.FirstName}} {{justJohns.LastName}}
+        </li>
+
+This gives me a bulleted list of names filtered by firstname of John. How would we count how many names matched?
+Set a variable at the time we filter.
+
+        <li ng-repeat='justJohns in arrayJohns = (AllNames | filter: {FirstName: "John:}:true)'>
+            {{justJohns.FirstName}} {{justJohns.LastName}}
+        </li>
+
+Now we have the array title arrayJohns which is the actual result of the filtered AllNames. We can get the count now with:
+
+        There are {{arrayJohns.length}} names that start with John.
+
+http://jsfiddle.net/joshkurz/Nk8qy/3/
+
+******************************************************
+
+<tabset>
+		<tab>
+			<tab-heading>
+				<i class="glyphicon glyphicon-envelope"></i> Correspondence
+			</tab-heading>
+            CONTENT
+        </tab>
+        <tab>
+			<tab-heading>
+				<i class="glyphicon glyphicon-wrench"></i> Management
+			</tab-heading>
+            CONTENT
+        </tab>
+</tabset> 
+
+***************************************************************
+
+Filter components in ng
+
+filter	    : Selects a subset of items from array and returns it as a new array.
+currency    : Formats a number as a currency (ie $1,234.56). When no currency symbol is provided, default symbol for current locale is used.
+number	    : Formats a number as text.
+date	    : Formats date to a string based on the requested format.
+json        : Allows you to convert a JavaScript object into JSON string.
+lowercase   : Converts string to lowercase.
+uppercase	: Converts string to uppercase.
+limitTo	    : Creates a new array or string containing only a specified number of elements. The elements are taken from either the beginning or the end of the source array, string or number, as specified by the value and sign (positive or negative) of limit. If a number is used as input, it is converted to a string.
+orderBy	    : Orders a specified array by the expression predicate. It is ordered alphabetically for strings and numerically for numbers. Note: if you notice numbers are not being sorted correctly, make sure they are actually being saved as numbers and not strings.
+
+
+    $scope.myResults = {
+        year:2013,
+        subjects:[
+          {title:'English',grade:'A'},
+          {title:'Math',grade:'A'},
+          {title:'Science',grade:'B'},
+          {title:'Geography',grade:'C'}
+        ]
+      };
+
+These can be used in a view. In this example we use 'filter'. The output will be each subject (title) that has a grade of 'A'.
+    
+    filter  :   <div ng-repeat="subj in myResults.subjects | filter: {grade: 'A'}">{{subj.title}}</div>
+
+These can be used in a controller to set an array to the filtered value. In this example we use 'filter'. The value of 'gradeA' will be an array (like subjects) that has subjects matching on grade of 'A'
+
+    filter  :   $scope.gradeA = $filter('filter')($scope.myResults.subjects, {grade: 'A'});
+    
+                Then in the view, put:
+                
+                <span ng-repeat="subj in gradeA">{{subj.title}}, </span>
+                
+                
+*************************************************************************
+
+Add a new key and value into an object
+
+We can add new keys and values into an object or an array of objects. 
+This is valuable when we one-to-one relationships between seperate objects and we want to add them.
+This can also be used to overwrite existing data.
+
+For each application object (in the openApplications array) add a key and value (with bracket or dot notation).
+ 
+        angular.forEach($scope.openApplications, function(obj){
+
+           //Using bracket notation
+           obj["Notes"] = "A sample note for every object";
+
+           //Using dot notation
+           obj.Notes = "A sample note for every object";
+
+        });
+
+
+The original openApplications array...
+
+        "openApplications": [
+            {
+                "ContentTypeID": "0x0100CD032FA195A2BD42B7C63811639DA9E000FEB17F62803B3F44B7F25793A1617CD2",
+                "Title": "View",
+                "CandidateId": 17,
+                "ApplicationPositionId": 14,
+                "Available": null,
+            },
+            {
+                "ContentTypeID": "0x0100CD032FA195A2BD42B7C63811639DA9E000FEB17F62803B3F44B7F25793A1617CD2",
+                "Title": "View",
+                "CandidateId": 20,
+                "ApplicationPositionId": 14,
+                "Available": null,
+            },
+
+
+Source: http://stackoverflow.com/questions/20111281/angularjs-foreach-push-new-item-into-object
+
+
+
+***********************
+
+
+// Code goes here
+
+
+nameArray = new Array("Word", "Excel", "Documentum", "Alfresco");
+var myString = 'Software:	MS SharePoint 2010, Excel, Word, Project, Visio, PowerPoint, Outlook, Open Text RedDot 7.0 CMS, Wordpress CMS, Adobe CS5 Dreamweaver, HP PPM Demand Management7.1 Languages:	HTML, CSS, JavaScript, PHP Methodologies:	Agile Scrum, SDLC, Waterfall, Project Management Body of Knowledge (PMBOK) Training:	SharePoint, Project Management, ITSM, ITIL, Borland CaliberRM ';
+var matches = [];
+for (i = 0; i < nameArray.length; i++) {
+    var nameRegEx =  new RegExp("\\b" + nameArray[i] + "\\b", "g");
+
+    if(nameRegEx.test(myString)) {
+      matches.push(nameArray[i]);
+    }
+}
+
+document.write(matches);
+
+
+http://plnkr.co/edit/HvG2gHXMSCv7vrAG15g5?p=preview
+
+**************************************
+
+
+
+        dataFactory.getListData($rootScope.applicationPath)
+            .then(function (result) {
+                $scope.openApplications = $filter('filter')(result, {
+                    ApplicationClosed: false
+                }); // get only open applications
+
+                // for each application object (in the openApplications array) add a key and value (with bracket or dot notation).
+                // in this example we add new key CandidateName with the value of Fullname. We got Fullname from the Candidate data where the lookup ID matches
+                angular.forEach($scope.openApplications, function (obj) {
+                    $scope.currentCandidate = $filter('filter')($scope.candidateJSON, {
+                        Id: obj.CandidateId
+                    });
+                    //console.log($scope.currentCandidate[0].Fullname);
+
+                    //Using dot notation
+                    obj.CandidateName = $scope.currentCandidate[0].Fullname; // we are using [0] because we expect an array with only one object, so we grab the first (only) one                
+                    obj.CandidatePath = $scope.currentCandidate[0].Path;
+                    obj.CandidateEmail = $scope.currentCandidate[0].EMailPersonal;
+                });
+            });

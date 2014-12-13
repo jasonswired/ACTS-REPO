@@ -1,0 +1,319 @@
+<!-- CSS -->
+<link rel="stylesheet" href="/sites/ACTS/SiteAssets/Sample/css/bootstrap.css" >
+<!-- <link rel="stylesheet" href="css/bootstrap-theme.css"> -->
+<link rel="stylesheet" href="/sites/ACTS/SiteAssets/Sample/css/ng-table.min.css" >
+<link rel="stylesheet" type="text/css" href="/sites/ACTS/SiteAssets/Sample/css/ng-grid.css" /> <!-- -->
+<!-- <link rel="stylesheet" href="css/jquery-ui.css" /> -->
+    
+<!-- LIBRARIES -->
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/libs/jquery.min.js"></script>
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/libs/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/libs/angular.min.js"></script>
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/libs/ui-bootstrap-tpls.min.js"></script>
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> <!-- -->
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/libs/ng-grid.debug.js"></script> <!-- must be called after jQuery -->
+    
+<!-- CUSTOM JS -->
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/scripts/app.js"></script>
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/scripts/services.js"></script>   
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/scripts/candidates.js"></script>
+<script type="text/javascript" src="/sites/ACTS/SiteAssets/Sample/js/scripts/crud.js"></script>
+
+<style>
+    .gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 100%; 
+    height: 150px;
+    }
+    
+    .gridStyle2 {
+    border: 1px solid rgb(212,212,212);
+    width: 100%; 
+    height: 800px;
+    font-size: 11px;
+    }
+</style>
+
+<div class="container-fluid" ng-app="myApp">
+    <div class="row">
+    <div class="col-md-12">
+<h2>Armedia Candidate Tracking System</h2>
+</br>
+    </div>
+    </div>
+    
+<div ng-controller="ListCtrl">
+<div ng-controller="CandidatesCtrl">
+
+<!-- <candidateView></candidateView> -->
+    
+<div class="row">
+  <div class="col-md-2 hide">
+      <!--Sidebar content-->
+    <h3>Filters</h3>
+    <div ng-controller="FilterCtrl">
+    
+      <div class="controls-row">
+        <label for="searchTextBox" class="control-label">Search:</label>
+        <div class="controls">
+          <input type="text" id="searchTextBox" ng-model="filterService.searchText">
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <label for="ComboBox3" class="control-label">Candidate Dropdown:</label>
+        <div class="controls">
+          <select id="cityComboBox" ng-model="filterService.activeFilters.Fullname">    <!-- this will push the selected value to .Id, which will then filter anything later with a "| filter:filterService.activeFilters" as the filter -->
+              <option value=""></option>
+              <option ng-repeat="select1 in candidateJSON">{{select1.Fullname}}</option>  <!-- get data from candidateJSON and put it in select1, then show Id (for filtering to work, this needs to match the model. If you want to use .Fullname then you need to change both -->
+          </select>
+        </div>
+      </div>
+    
+    <div class="controls-row">
+        <label for="ComboBox4" class="control-label">Alternative Dropdown</label>
+        <!-- START - simple select box with output/display -->
+        <select ng-model="selectedCandidate" ng-options="opt as opt.Fullname for opt in candidateJSON | filter:filterService.activeFilters"> 
+            <!-- uses the candidatesList name for the options.-->
+            <!-- create a model for this selector, name it anything -->
+            <!-- https://docs.angularjs.org/api/ng/directive/ngModel -->
+        </select>
+        </br><hr>
+        <p>
+        Name: {{ selectedCandidate.Fullname }}</br>
+        ID: {{selectedCandidate.Id }}</br>
+        Email: {{ selectedCandidate.EMailPersonal }}</br>
+        </br>
+    </p>
+    </div>  
+    
+<!-- 
+    <div ng-repeat="sample1 in candidateJSON | filter:filterService.activeFilters">  
+       Name: {{ sample1.Fullname }}</br>
+        ID: {{sample1.Id }}</br>
+        Email: {{ sample1.EMailPersonal }}</br><hr>
+      </div>
+-->
+        
+
+  </div>
+
+<!-- END -->
+
+</div>
+  <div class="col-md-10">
+      <!--Body content-->  
+     <tabset>
+         <tab> <!-- HOME -->
+			<tab-heading>
+				<i class="glyphicon glyphicon-home"></i> Home
+			</tab-heading>
+             </br>
+         <h3>Getting Started</h3>
+         <p>Select a tab above.</p>
+         <p></p>
+         <p>Aliquam dapibus, nisl ut hendrerit efficitur, urna eros congue urna, vel euismod tellus quam sit amet diam. Sed a maximus orci. Nam purus felis, tempus sed malesuada id, dapibus vel eros. Vivamus sit amet posuere orci, sed fermentum risus. Integer interdum, magna eget rutrum pretium, sem magna tempus sapien, sit amet iaculis enim nisl vel dui. Sed est sem, iaculis et lorem id, tristique varius dolor. Maecenas ut elit orci. Vestibulum eget orci non ipsum gravida eleifend. Maecenas convallis justo quis magna tincidunt pellentesque. Aenean suscipit consectetur odio, ac interdum tortor gravida id. Vivamus malesuada malesuada ornare. Aliquam erat volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+         <p>Ut ultrices lectus mauris, et posuere metus porta vel. Duis ac nibh gravida, hendrerit leo non, dapibus nisi. Sed vulputate erat at auctor dictum. Duis consectetur ac nulla sit amet gravida. Donec eu laoreet lectus. In consequat tristique commodo. Fusce molestie libero lorem, ac faucibus ex dictum vitae. Pellentesque blandit eros mauris, a pretium nibh cursus non. Nunc vehicula nibh mi, quis congue metus porttitor in. In imperdiet mauris augue, at congue velit vehicula aliquam. Nullam at elit elit. Etiam fermentum eu dolor nec lobortis. Nullam sem augue, tempor at cursus sed, eleifend sit amet ligula. Quisque nec dui et dolor mattis faucibus a a ex. Aliquam quam erat, luctus pulvinar sem non, ornare condimentum lorem. Sed sit amet pretium nisi, sed aliquet metus.</p>
+        </tab>
+		<tab> <!-- CANDIDATES -->
+			<tab-heading> 
+				<i class="glyphicon glyphicon-user"></i> Candidates
+			</tab-heading>
+            <candidateview></candidateview> <!-- views/candidates.html -->
+		</tab>
+		<tab> <!-- APPLICATIONS -->
+			<tab-heading> 
+				<i class="glyphicon glyphicon-file"></i> Applications
+			</tab-heading>
+			<div class="row">
+  <div class="col-md-4">
+   
+ <!-- START - Grid with selection feature -->
+    
+    <h3>Applications Grid</h3> 
+    <h5>Click a row for more details</h5> 
+    <div class="gridStyle2" ng-grid="applicationsGrid"></div> <!-- gridOptions is defined in the controller -->
+    <!-- raw output of select grid items -->
+    <!-- <div class="selectedItems">{{mySelections}}</div> -->
+    <!-- {{gridOptions.selectedItems}} -->
+      
+  </div>
+
+  <div class="col-md-8">
+    <h3>Applications Details</h3>
+      <div ng-repeat="row1 in myApplicantSelections">  <!-- mySelections is defined in the controller. 'row' could be anything -->
+        
+          <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">Application Detail</h3>
+          </div>
+          <div class="panel-body">
+                {{row1.CandidateId }}
+              </br>
+            <b>Candidate Response:</b> {{row1.CandidateResponse}} </br>
+            <b>Phone Screen Notes:</b> {{row1.PhoneScreenNotes}} </br>
+            <b>Interview Notes:</b> {{row1.InterviewNotes}}
+
+          </div>
+        </div>
+          
+      </div>    
+
+<!-- END GRID Example -->
+ </div>
+</div>
+		</tab>
+		<tab class="hide">
+			<tab-heading>
+				<i class="glyphicon glyphicon-inbox"></i> Positions (OFF)
+			</tab-heading>
+			<div class="row">
+    <div class="col-md-4">
+    
+    <h3>Positions Grid</h3> 
+    <h5>Click a row for more details</h5> 
+    <div class="gridStyle2" ng-grid="positionsGrid"></div> <!-- gridOptions is defined in the controller -->
+    <!-- raw output of select grid items -->
+    <!-- <div class="selectedItems">{{mySelections}}</div> -->
+    <!-- {{gridOptions.selectedItems}} -->
+      
+    </div>
+  <div class="col-md-6">
+
+    <h3>Positions Details</h3>
+      <div ng-repeat="selectedPosition in myPositionSelections">  <!-- mySelections is defined in the controller. 'row' could be anything -->
+        
+          <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{selectedPosition.Position}}</h3>
+          </div>
+          <div class="panel-body">
+                <b>Opened Date: </b> {{selectedPosition.PositionOpened | cleanDate | date: 'MM-dd-yyyy'}} </br>
+                <b>Closed Date: </b> {{selectedPosition.PositionClosed | cleanDate | date: 'MM-dd-yyyy'}} </br>
+                <b>Number Applications: </b> {{selectedPosition.NumberApplications}} </br>
+                <b>Job Responsibilities: </b> {{selectedPosition.JobResponsibilities}} </br>
+                <b>Qualifications: </b> {{selectedPosition.Qualifications}} </br>
+
+             <h6 align="right">Position ID: {{selectedPosition.Id}}</h6>
+
+    
+<!-- https://docs.angularjs.org/api/ng/directive/ngBindHtml 
+<p ng-bind-html="selectedPosition.JobResponsibilities | unsafe"></p>
+-->
+          </div>
+        </div>
+
+<!-- This will show the Applications that match on the Position  -->
+
+<h3>There are {{appCount.length}} Applications for {{selectedPosition.Position}}</h3>
+
+       <div ng-repeat="matchingApp1 in appCount = (applicationsJSON | filter: {ApplicationPositionId: selectedPosition.Id}:true)"> 
+           <!-- using 'true' will get he exact match. without this i was trying to match 19 and it was return 19, 119, 419, etc -->
+           <!--  <li>Selected Candidate's Application ID: {{matchingCandidate.Id}}, {{matchingCandidate.CandidateId}}</li> -->
+           
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+                <div ng-repeat="candidateMatch in candidateJSON | filter: {Id: matchingApp1.CandidateId}:true"><b>{{candidateMatch.Fullname}}</b>    |     {{candidateMatch.EMailPersonal}}</div>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <b>Application Status: </b>{{matchingApp1.ApplicationStatusValue}}</br>
+            <b>Phone Screen Notes:</b> {{matchingApp1.PhoneScreenNotes}} </br>
+            <b>Interview Notes:</b> {{matchingApp1.InterviewNotes}}</br>
+            <b>Test Status: </b>{{matchingApp1.TestStatusValue}}</br>
+            <b>Recruiter Notes: </b>{{matchingApp1.RecruiterNotes}}</br>
+            <b>Candidate Response:</b> {{matchingApp1.CandidateResponse}}
+
+    <h6 align="right">{{selectedPosition.Position}} | App ID: {{matchingApp1.Id}} | Position ID: {{matchingApp1.ApplicationPositionId}}</h6>
+
+        </div>
+        </div>
+           
+
+
+       </div>
+      </div> 
+      <!-- 
+   <div ng-model="testRows">
+    <h3>A single item in the Candidate list.</h3>
+  <ul ng-repeat="(key, val) in candidateJSON[0]">
+    <li>{{key}}: {{val}}</li>
+  </ul>
+</div>
+    
+    -->
+    
+</div>
+</div>
+		</tab>
+		<tab> <!-- POSITIONS -->
+			<tab-heading>
+				<i class="glyphicon glyphicon-inbox"></i> Positions
+			</tab-heading>
+	       <positionview></positionview> <!-- views/positions.html -->
+		</tab>
+
+		<tab> <!-- CORRESPONDENCE -->
+			<tab-heading>
+				<i class="glyphicon glyphicon-envelope"></i> Correspondence
+			</tab-heading>
+        </tab>
+        <tab> <!-- MANAGEMENT -->
+			<tab-heading>
+				<i class="glyphicon glyphicon-wrench"></i> Management
+			</tab-heading>
+        </tab>
+</tabset> 
+      
+      
+<!--    
+    <table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Email</th>
+       </tr>
+      </thead>
+      <tbody id="candidateTable">
+      <tr ng-repeat="person in candidateJSON | filter:filterService.activeFilters | filter:filterService.searchText">
+        <td>{{person.Fullname}}</td>
+        <td>{{person.Id}}</td>
+        <td>{{person.EMailPersonal}}</td>
+      </tr>
+      </tbody>
+    </table>
+-->    
+    
+<!-- START - Grid with selection feature -->
+  
+<!--
+    <h3>Table</h3> 
+    <h5>Click a row for more details</h5> 
+    <div class="gridStyle" ng-grid="gridOptions"></div> 
+ -->     
+      
+    <!-- gridOptions is defined in the controller -->
+    <!-- raw output of select grid items -->
+    <!-- <div class="selectedItems">{{mySelections}}</div> -->
+    <!-- {{gridOptions.selectedItems}} -->
+
+<!-- mySelections is defined in the controller. 'detail' could be anything -->
+<!--    <hr>
+      <div ng-repeat="detail in mySelections">  
+        Name: {{detail.name }}</br>
+        Employment: {{ detail.employment }}</br>
+        City: {{ detail.city }}</br></br>
+      </div>
+-->
+<!-- END GRID Example -->
+
+
+    </div> <!-- end span8 -->
+</div>
+
+</div> <!-- END THE CONTROLLER -->  
+
+</div> <!-- END THE CONTROLLER -->  
+</div>

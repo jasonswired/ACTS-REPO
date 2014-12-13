@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-4"> 
+    <!-- START - Grid with selection feature -->
+    
+    <h3>Applications Grid</h3> 
+    <h5>Click a row for more details</h5> 
+    <div class="gridStyle2" ng-grid="applicationsGrid"></div> <!-- gridOptions is defined in the controller -->
+    <!-- raw output of select grid items -->
+    <!-- <div class="selectedItems">{{mySelections}}</div> -->
+    <!-- {{gridOptions.selectedItems}} -->     
+  </div>
+
+  <div class="col-md-8">
+    <h3>Applications Details</h3>
+      <div ng-repeat="selectedApplicant in myApplicantSelections">  <!-- mySelections is defined in the controller. 'row' could be anything -->
+        
+          <div class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title">Application Detail</h3>
+          </div>
+          <div class="panel-body">
+                {{selectedApplicant.CandidateId }}
+              </br>
+            <b>Candidate Response:</b> {{selectedApplicant.CandidateResponse}} </br>
+            <b>Phone Screen Notes:</b> {{selectedApplicant.PhoneScreenNotes}} </br>
+            <b>Interview Notes:</b> {{selectedApplicant.InterviewNotes}}
+
+      
+                <div class="well">
+            <h4><i class="glyphicon glyphicon-file"></i> {{selectedApplicant.CandidateArray.Fullname}}'s Application ({{selectedApplicant.Id}})</h4>
+                <hr>
+                   CandidateArray: {{selectedApplicant.CandidateArray}}
+                <form class="form-horizontal" role="form">
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Application Closed</label></b><div class='col-sm-9'>{{selectedApplicant.ApplicationClosed}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Application Status</label></b><div class='col-sm-9 small'>{{selectedApplicant.ApplicationStatusValue}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Status Date</label></b><div class='col-sm-9 small'>{{selectedApplicant.StatusDate | cleanDate | date: 'yyyy-MM-dd'}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Available</label></b><div class='col-sm-9 small'>{{selectedApplicant.Available}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Desired Compensation</label></b><div class='col-sm-9 small'>{{selectedApplicant.DesiredCompensation}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Recruiter Notes</label></b><div class='col-sm-9 small'>{{selectedApplicant.RecruiterNotes}}</div></div>
+                <h5><b>Phone Screen and Interview</b></h5>
+                    <div class='form-group'><b><label class='col-sm-3 control-label'>Phone Screen Required</label></b><div class='col-sm-9 small'>{{selectedApplicant.PhoneScreenRequiredValue}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Phone Screen Scheduled</label></b><div class='col-sm-9 small'>{{selectedApplicant.PhoneScreenScheduled}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Phone Interviewer</label></b><div class='col-sm-9 small hide'>{{selectedApplicant.PhoneInterviewer}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Phone Screen Notes</label></b><div class='col-sm-9 small'>{{selectedApplicant.PhoneScreenNotes}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Schedule Interview</label></b><div class='col-sm-9 small'>{{selectedApplicant.ScheduleInterviewValue}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Interviewers</label></b><div class='col-sm-9 small hide'>{{selectedApplicant.Interviewers}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Interviewed</label></b><div class='col-sm-9 small'>{{selectedApplicant.InterviewedValue}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Interview Notes</label></b><div class='col-sm-9 small'>{{selectedApplicant.InterviewNotes}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Interview</label></b><div class='col-sm-9 small'>{{selectedApplicant.Interview | cleanDate | date: 'yyyy-MM-dd'}}</div></div>
+                <h5><b>Testing</b></h5>
+                    <div class='form-group'><b><label class='col-sm-3 control-label'>Send/Resend Test</label></b><div class='col-sm-9 small'>{{selectedApplicant.SendResendTest}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Test Sent</label></b><div class='col-sm-9 small'>{{selectedApplicant.TestSent | cleanDate | date: 'yyyy-MM-dd'}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Test Received</label></b><div class='col-sm-9 small'>{{selectedApplicant.TestReceived}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Test Reviewer</label></b><div class='col-sm-9 small'>{{selectedApplicant.TestReviewerId}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>TestReviewNotes</label></b><div class='col-sm-9 small'>{{selectedApplicant.TestReviewNotes}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Test Status</label></b><div class='col-sm-9 small'>{{selectedApplicant.TestStatusValue}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Test Status Date</label></b><div class='col-sm-9 small'>{{selectedApplicant.TestStatusDate | cleanDate | date: 'yyyy-MM-dd'}}</div></div>
+                <h5><b>Notification</b></h5>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Notified By</label></b><div class='col-sm-9 small'>{{selectedApplicant.NotifiedById}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Notification Method</label></b><div class='col-sm-9 small hide'>{{selectedApplicant.NotificationMethod}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Notified By Phone</label></b><div class='col-sm-9 small'>{{selectedApplicant.NotifiedByPhone | cleanDate | date: 'yyyy-MM-dd'}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Notified By Email</label></b><div class='col-sm-9 small'>{{selectedApplicant.NotifiedByEmail | cleanDate | date: 'yyyy-MM-dd'}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Notified By Letter</label></b><div class='col-sm-9 small'>{{selectedApplicant.NotifiedByLetter | cleanDate | date: 'yyyy-MM-dd'}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Candidate Response</label></b><div class='col-sm-9 small'>{{selectedApplicant.CandidateResponse}}</div></div>
+                <div class='form-group'><b><label class='col-sm-3 control-label'>Declined Comments</label></b><div class='col-sm-9 small'>{{selectedApplicant.DeclinedComments}}</div></div>
+
+        </div>
+      
+          </div>
+        </div>
+          
+      </div>    
+
+<!-- END GRID Example -->
+ </div>
+</div>
